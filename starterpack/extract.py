@@ -5,6 +5,7 @@ cases back into build.py
 """
 
 from distutils.dir_util import copy_tree
+from shutil import copytree
 import os
 import shutil
 import subprocess
@@ -200,7 +201,8 @@ def unpack_dmg(filename, dest):
             print('Failed to mount', filename, ' -- is it already mounted?')
             raise
         try:
-            copy_tree(tmpdir, dest, preserve_symlinks=True)
+            # copy_tree(tmpdir, dest, preserve_symlinks=True)
+            copytree(tmpdir, dest, symlinks=True, ignore=lambda _, _fs: '.Trashes')
         finally:
             subprocess.check_call(['hdiutil', 'detach', '-quiet', tmpdir])
 

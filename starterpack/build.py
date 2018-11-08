@@ -85,7 +85,7 @@ def fixup_manifest(filename, comp, **kwargs):
         if exe is None:
             print('WARNING: {} for {} not set!'.format(key, comp.name))
         exe = paths.utilities(comp.name, exe)
-        if not os.path.isfile(exe):
+        if not os.path.exists(exe):
             print('WARNING: {} "{}" does not exist!'.format(key, exe))
     # Save if manifest is not same as on disk
     if manifest != file_man:
@@ -174,17 +174,20 @@ def _therapist_ini():
 
     dirname = 'windows' if paths.HOST_OS == 'win' else paths.HOST_OS
     ma, mi = paths.df_ver(as_string=False)
-    fname = 'v0.{}.{}_graphics_{}{}.ini'.format(
+    fname = 'v0.{}.{}_{}{}.ini'.format(
         ma, mi, paths.HOST_OS, paths.BITS)
     util_path = paths.utilities(
-        'Dwarf Therapist', 'data', 'memory_layouts', dirname, fname)
-    if not os.path.isfile(util_path):
+        'Dwarf Therapist', 'data', 'memory_layouts', dirname)
+    file_path = paths.utilities(util_path, fname)
+    if not os.path.isfile(file_path):
         url = ('https://raw.githubusercontent.com/Dwarf-Therapist/'
                'Dwarf-Therapist/master/share/memory_layouts/{}/{}')
         comp_path = paths.components(fname)
         try:
             if not os.path.isfile(comp_path):
                 component.raw_dl(url.format(dirname, fname), comp_path)
+            if not os.path.exists(paths.utilities('Dwarf Therapist', 'data')):
+                os.makedirs(util_path)
             shutil.copy(comp_path, util_path)
         except Exception:  # pylint:disable=broad-except
             teardown('no Therapist memory layout')

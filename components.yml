@@ -93,9 +93,12 @@ utilities:
         manifest:
             tooltip: View generated sketch versions of any creature in DF
     Dwarf Therapist:
-        requires_os: win
+        # requires_os: win
         bay12: 168411
-        ident: Dwarf-Therapist/Dwarf-Therapist
+        manifest:
+            osx_exe: DwarfTherapist.app/Contents/MacOS/DwarfTherapist
+            tooltip: Puts all your dwarves through intensive therapy
+        ident: 13265
     Isoworld:
         requires_os: win
         bay12: 70700

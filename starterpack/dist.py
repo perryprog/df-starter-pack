@@ -57,7 +57,10 @@ def zip_pack():
             zf.write(dirname, os.path.relpath(dirname, paths.build()))
             for filename in files:
                 fname = os.path.join(dirname, filename)
-                zf.write(fname, os.path.relpath(fname, paths.build()))
+                try:
+                    zf.write(fname, os.path.relpath(fname, paths.build()))
+                except FileNotFoundError:
+                    print("Compressing the build dir failed, see https://github.com/rgov/starter-pack/issues/7 for more details.")
 
 
 def release_docs():
